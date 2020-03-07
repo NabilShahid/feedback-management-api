@@ -1,4 +1,4 @@
-import { CommonMethodsService } from './../common-methods/common-methods.service';
+import { CommonMethodsService } from '../shared-services/common-methods.service';
 import { ConfigService } from './../config/config.service';
 import { Injectable, HttpException } from '@nestjs/common';
 import { Pool } from 'pg';
@@ -27,8 +27,7 @@ export class DataAccessService {
     public executeDBFunction(
         name: string,
         params: object,
-        diagnosticLogging: boolean,
-        schema = SCHEMAS.get('Public'),
+        schema = SCHEMAS.Public,
       ) {
         return new Promise((resolve, reject) => {
           this.pool.connect((err, client, done) => {

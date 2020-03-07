@@ -1,18 +1,15 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DataAccessService } from './data-access/data-access.service';
 import { ConfigService } from './config/config.service';
-import { CommonMethodsService } from './common-methods/common-methods.service';
+import { CommonMethodsService } from './shared-services/common-methods.service';
+import { AdminOperationsModule } from './admin-operations/admin-operations.module';
+import { ConfigModule } from './config/config.module';
+import { SharedServicesModule } from './shared-services/shared-services.module';
 
 @Module({
-  imports: [],
+  imports: [AdminOperationsModule, SharedServicesModule],
   controllers: [AppController],
-  providers: [AppService, DataAccessService,  {
-    provide: ConfigService,
-    useValue: new ConfigService(
-      `environments/${process.env.NODE_ENV || 'development'}.env`,
-    ),
-  }, CommonMethodsService],
+  providers: [AppService],
 })
 export class AppModule {}

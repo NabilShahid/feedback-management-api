@@ -1,4 +1,5 @@
-const SCHEMAS=new Map<string,string>([
-    ["Public","public"]
-]);
+enum SCHEMAS{
+    Public="public",
+    AdminFunctions="admin_functions"
+}
 export default SCHEMAS;
