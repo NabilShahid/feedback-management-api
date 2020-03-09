@@ -9,3 +9,9 @@ export type EmployeeWithCount={
     EmployeeData:Employee,
     Count:number
 }
+
+export type ClientSessionObject={
+    EmployeeId:string,
+    DisplayName:string,
+    IsAdmin:boolean
+}
