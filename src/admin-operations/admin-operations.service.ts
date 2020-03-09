@@ -1,7 +1,8 @@
+import { EmployeeWithCount } from "./../types/common-types";
 import SCHEMAS from "./../constants/schemas";
 import { DataAccessService } from "./../shared-services/data-access.service";
 import { ADMIN_DB_FUNCTION_NAMES } from "./../constants/db-function-names";
-import  EMPLOYEE_TYPES from "./../constants/employee-types";
+import EMPLOYEE_TYPES from "./../constants/employee-types";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
@@ -10,39 +11,56 @@ export class AdminOperationsService {
   async createEmployee(
     userName: string,
     displayName: string,
-    employeeTypeId: number
+    phoneNumber:string,
+    password
   ): Promise<Array<Object>> {
     const createResult: any = await this.dataAccessService.executeDBFunction(
       ADMIN_DB_FUNCTION_NAMES.CreateEmployee,
       {
         UserName: userName,
         DisplayName: displayName,
-        EmployeeTypeId: employeeTypeId
-      },
-      SCHEMAS.AdminFunctions
-    );
-
-    return createResult.rows&&createResult.rows[0];
-  }
-  async getEmployees(
-    startIndex: number,
-    pageSize: number,
-    searchString: string,
-    order:string
-
-  ): Promise<Array<Employee>> {
-    const getResult: any = await this.dataAccessService.executeDBFunction(
-      ADMIN_DB_FUNCTION_NAMES.GetEmployees,
-      {
-        StartIndex: startIndex,
-        PageSize: pageSize,
-        SearchString:searchString,
-        Order:order,
+        PhoneNumber:phoneNumber,
+        Password:password,
         EmployeeTypeId: EMPLOYEE_TYPES.Normal
       },
       SCHEMAS.AdminFunctions
     );
 
-    return getResult.rows;
+    return createResult.rows && createResult.rows[0];
+  }
+  async getEmployees(
+    startIndex: number,
+    pageSize: number,
+    searchString: string,
+    order: string
+  ): Promise<EmployeeWithCount> {
+    const getResult: any = await Promise.all([
+      this.dataAccessService.executeDBFunction(
+        ADMIN_DB_FUNCTION_NAMES.GetEmployees,
+        {
+          StartIndex: startIndex,
+          PageSize: pageSize,
+          SearchString: searchString,
+          Order: order,
+          EmployeeTypeId: EMPLOYEE_TYPES.Normal
+        },
+        SCHEMAS.AdminFunctions
+      ),
+      this.getEmployeesCount(EMPLOYEE_TYPES.Normal)
+    ]);
+    return {
+      EmployeeData: getResult[0].rows,
+      Count: getResult[1]
+    };
+  }
+  async getEmployeesCount(employeeTypeId: number) {
+    const getResult: any = await this.dataAccessService.executeDBFunction(
+      ADMIN_DB_FUNCTION_NAMES.GetEmployeesCount,
+      {
+        EmployeeTypeId: employeeTypeId
+      },
+      SCHEMAS.AdminFunctions
+    );
+    return getResult.rows[0].EmployeeCount;
   }
 }

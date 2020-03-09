@@ -35,11 +35,13 @@ export class DataAccessService {
               reject(new HttpException(err, 500));
             }
             else if (client) {
+              console.log(`select * from ${schema}.${name}(${this.commonMethods.getParamsString(params)})`,params);
               client.query(
                 `select * from ${schema}.${name}(${this.commonMethods.getParamsString(params)})`,
                 Object.values(params),
                 (err, row) => {
                   client.release();
+                  console.log(err)
                   return !err ? resolve(row) : reject(new HttpException(err, 500));
                 },
               );

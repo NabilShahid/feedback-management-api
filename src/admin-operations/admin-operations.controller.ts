@@ -1,3 +1,4 @@
+import { Employee, EmployeeWithCount } from './../types/common-types';
 import { AdminOperationsService } from "./admin-operations.service";
 import { Controller, Post, Query, Body, Get } from "@nestjs/common";
 
@@ -9,11 +10,12 @@ export class AdminOperationsController {
     return this.adminOperationsService.createEmployee(
       body.UserName,
       body.DisplayName,
-      body.EmployeeTypeId
+      body.PhoneNumber,
+      body.Password
     );
   }
   @Get("getEmployees")
-  getEmployees(@Query() query): Promise<Array<Employee>> {
+  getEmployees(@Query() query): Promise<EmployeeWithCount> {
     return this.adminOperationsService.getEmployees(
       query.startIndex,
       query.pageSize,
