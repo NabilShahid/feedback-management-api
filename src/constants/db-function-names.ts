@@ -10,5 +10,6 @@ export enum PUBLIC_DB_FUNCTION_NAMES {
   GetEmployeeInfo = "get_employee_info"
 }
 export enum USER_DB_FUNCTION_NAMES {
-  SearchEmployees = "search_employees"
+  SearchEmployees = "search_employees",
+  SubmitFeedback="submit_feedback"
 }
