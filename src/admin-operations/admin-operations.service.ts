@@ -1,4 +1,4 @@
-import { EmployeeWithCount } from "./../types/common-types";
+import { EmployeeWithCount, DbResultObj } from "./../types/common-types";
 import SCHEMAS from "./../constants/schemas";
 import { DataAccessService } from "./../shared-services/data-access.service";
 import { ADMIN_DB_FUNCTION_NAMES } from "./../constants/db-function-names";
@@ -11,7 +11,7 @@ export class AdminOperationsService {
   async createEmployee(
     userName: string,
     displayName: string,
-    phoneNumber:string,
+    phoneNumber: string,
     password
   ): Promise<Array<Object>> {
     const createResult: any = await this.dataAccessService.executeDBFunction(
@@ -19,8 +19,8 @@ export class AdminOperationsService {
       {
         UserName: userName,
         DisplayName: displayName,
-        PhoneNumber:phoneNumber,
-        Password:password,
+        PhoneNumber: phoneNumber,
+        Password: password,
         EmployeeTypeId: EMPLOYEE_TYPES.Normal
       },
       SCHEMAS.AdminFunctions
@@ -62,5 +62,28 @@ export class AdminOperationsService {
       SCHEMAS.AdminFunctions
     );
     return getResult.rows[0].EmployeeCount;
+  }
+  async createPerformanceReview(employeeId: string, assignees: Array<string>):Promise<DbResultObj> {
+    const getResult: any = await this.dataAccessService.executeDBFunction(
+      ADMIN_DB_FUNCTION_NAMES.CreatePerformanceReview,
+      {
+        EmployeeId: employeeId,
+        Assignees: JSON.stringify(assignees)
+      },
+      SCHEMAS.AdminFunctions
+    );
+    return getResult.rows[0];
+  }
+  async manageReviewAssignees(performanceReviewId: string, assigneesToAdd: Array<string>, assigneesToRemove: Array<string>):Promise<DbResultObj> {
+    const getResult: any = await this.dataAccessService.executeDBFunction(
+      ADMIN_DB_FUNCTION_NAMES.ManageReviewAssignees,
+      {
+        PerformanceReviewId: performanceReviewId,
+        AssigneesToAdd: JSON.stringify(assigneesToAdd),
+        AssigneesToRemove: JSON.stringify(assigneesToRemove),
+      },
+      SCHEMAS.AdminFunctions
+    );
+    return getResult.rows[0];
   }
 }

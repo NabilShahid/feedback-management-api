@@ -15,3 +15,12 @@ export type ClientSessionObject={
     DisplayName:string,
     IsAdmin:boolean
 }
+export type EmployeeSearchResult={
+    EmployeeId:string,
+    UserName:string,
+    DisplayName:string
+}
+
+export type DbResultObj={
+    Result:boolean
+}

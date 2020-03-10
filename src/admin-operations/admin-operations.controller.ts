@@ -1,6 +1,6 @@
-import { Employee, EmployeeWithCount } from './../types/common-types';
+import { Employee, EmployeeWithCount, DbResultObj } from './../types/common-types';
 import { AdminOperationsService } from "./admin-operations.service";
-import { Controller, Post, Query, Body, Get } from "@nestjs/common";
+import { Controller, Post, Query, Body, Get, Put } from "@nestjs/common";
 
 @Controller("admin-operations")
 export class AdminOperationsController {
@@ -21,6 +21,21 @@ export class AdminOperationsController {
       query.pageSize,
       query.searchString,
       query.order
+    );
+  }
+  @Post("createPerformanceReview")
+  createPerformanceReview(@Body() body): Promise<DbResultObj> {
+    return this.adminOperationsService.createPerformanceReview(
+      body.EmployeeId,
+      body.Assignees
+    );
+  }
+  @Put("manageReviewAssignees")
+  manageReviewAssignees(@Body() body): Promise<DbResultObj> {
+    return this.adminOperationsService.manageReviewAssignees(
+      body.performaceReviewId,
+      body.assigneesToAdd,
+      body.assigneesToRemove
     );
   }
 }
