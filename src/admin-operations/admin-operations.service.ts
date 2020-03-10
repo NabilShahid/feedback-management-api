@@ -1,4 +1,4 @@
-import { EmployeeWithCount, DbResultObj } from "./../types/common-types";
+import { EmployeeWithCount, DbResultObj, PerformanceReview } from "./../types/common-types";
 import SCHEMAS from "./../constants/schemas";
 import { DataAccessService } from "./../shared-services/data-access.service";
 import { ADMIN_DB_FUNCTION_NAMES } from "./../constants/db-function-names";
@@ -63,7 +63,10 @@ export class AdminOperationsService {
     );
     return getResult.rows[0].EmployeeCount;
   }
-  async createPerformanceReview(employeeId: string, assignees: Array<string>):Promise<DbResultObj> {
+  async createPerformanceReview(
+    employeeId: string,
+    assignees: Array<string>
+  ): Promise<DbResultObj> {
     const getResult: any = await this.dataAccessService.executeDBFunction(
       ADMIN_DB_FUNCTION_NAMES.CreatePerformanceReview,
       {
@@ -74,13 +77,25 @@ export class AdminOperationsService {
     );
     return getResult.rows[0];
   }
-  async manageReviewAssignees(performanceReviewId: string, assigneesToAdd: Array<string>, assigneesToRemove: Array<string>):Promise<DbResultObj> {
+  async getAllPerformanceReviews(): Promise<Array<PerformanceReview>> {
+    const getResult: any = await this.dataAccessService.executeDBFunction(
+      ADMIN_DB_FUNCTION_NAMES.GetAllPerformanceReviews,
+      {},
+      SCHEMAS.AdminFunctions
+    );
+    return getResult.rows;
+  }
+  async manageReviewAssignees(
+    performanceReviewId: string,
+    assigneesToAdd: Array<string>,
+    assigneesToRemove: Array<string>
+  ): Promise<DbResultObj> {
     const getResult: any = await this.dataAccessService.executeDBFunction(
       ADMIN_DB_FUNCTION_NAMES.ManageReviewAssignees,
       {
         PerformanceReviewId: performanceReviewId,
         AssigneesToAdd: JSON.stringify(assigneesToAdd),
-        AssigneesToRemove: JSON.stringify(assigneesToRemove),
+        AssigneesToRemove: JSON.stringify(assigneesToRemove)
       },
       SCHEMAS.AdminFunctions
     );

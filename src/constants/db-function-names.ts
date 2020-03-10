@@ -3,7 +3,8 @@ export enum ADMIN_DB_FUNCTION_NAMES {
   GetEmployees = "get_employees",
   GetEmployeesCount = "get_employees_count",
   CreatePerformanceReview="create_performance_review",
-  ManageReviewAssignees="manage_review_assignees"
+  ManageReviewAssignees="manage_review_assignees",
+  GetAllPerformanceReviews="get_all_performance_reviews"
 }
 export enum PUBLIC_DB_FUNCTION_NAMES {
   Login = "login",

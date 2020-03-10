@@ -24,3 +24,12 @@ export type EmployeeSearchResult={
 export type DbResultObj={
     Result:boolean
 }
+
+export type PerformanceReview = {
+    EmployeeId: string;
+    DisplayName: string;
+    AvgRating: number;
+    AssigneesCount: number;
+    Feedbacks: number;
+  };
+  

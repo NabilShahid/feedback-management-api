@@ -1,4 +1,9 @@
-import { Employee, EmployeeWithCount, DbResultObj } from './../types/common-types';
+import {
+  Employee,
+  EmployeeWithCount,
+  DbResultObj,
+  PerformanceReview
+} from "./../types/common-types";
 import { AdminOperationsService } from "./admin-operations.service";
 import { Controller, Post, Query, Body, Get, Put } from "@nestjs/common";
 
@@ -6,7 +11,7 @@ import { Controller, Post, Query, Body, Get, Put } from "@nestjs/common";
 export class AdminOperationsController {
   constructor(private adminOperationsService: AdminOperationsService) {}
   @Post("createEmployee")
-  createEmployee(@Body() body:Employee): Promise<Array<Object>> {
+  createEmployee(@Body() body: Employee): Promise<Array<Object>> {
     return this.adminOperationsService.createEmployee(
       body.UserName,
       body.DisplayName,
@@ -22,6 +27,10 @@ export class AdminOperationsController {
       query.searchString,
       query.order
     );
+  }
+  @Get("getAllPerformanceReviews")
+  getAllPerformanceReviews(): Promise<Array<PerformanceReview>> {
+    return this.adminOperationsService.getAllPerformanceReviews();
   }
   @Post("createPerformanceReview")
   createPerformanceReview(@Body() body): Promise<DbResultObj> {
