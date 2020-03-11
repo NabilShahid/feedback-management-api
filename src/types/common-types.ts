@@ -1,4 +1,5 @@
 export type Employee={
+    EmployeeId:string,
     DisplayName:string,
     UserName:string,
     Password:string,

@@ -1,4 +1,8 @@
-import { EmployeeWithCount, DbResultObj, PerformanceReview } from "./../types/common-types";
+import {
+  EmployeeWithCount,
+  DbResultObj,
+  PerformanceReview
+} from "./../types/common-types";
 import SCHEMAS from "./../constants/schemas";
 import { DataAccessService } from "./../shared-services/data-access.service";
 import { ADMIN_DB_FUNCTION_NAMES } from "./../constants/db-function-names";
@@ -85,11 +89,24 @@ export class AdminOperationsService {
     );
     return getResult.rows;
   }
+  async getSubmittedReviews(
+    performanceReviewId: string
+  ): Promise<Array<PerformanceReview>> {
+    const getResult: any = await this.dataAccessService.executeDBFunction(
+      ADMIN_DB_FUNCTION_NAMES.GetSubmittedReviews,
+      {
+        PerformanceReviewId:performanceReviewId
+      },
+      SCHEMAS.AdminFunctions
+    );
+    return getResult.rows;
+  }
   async manageReviewAssignees(
     performanceReviewId: string,
     assigneesToAdd: Array<string>,
     assigneesToRemove: Array<string>
   ): Promise<DbResultObj> {
+    console.log(assigneesToAdd, assigneesToRemove);
     const getResult: any = await this.dataAccessService.executeDBFunction(
       ADMIN_DB_FUNCTION_NAMES.ManageReviewAssignees,
       {
@@ -100,5 +117,31 @@ export class AdminOperationsService {
       SCHEMAS.AdminFunctions
     );
     return getResult.rows[0];
+  }
+  async updateEmployee(
+    employeeId: string,
+    displayName: string,
+    phoneNumber: string
+  ): Promise<Array<Object>> {
+    const getResult: any = await this.dataAccessService.executeDBFunction(
+      ADMIN_DB_FUNCTION_NAMES.UpdateEmployee,
+      {
+        EmployeeId: employeeId,
+        DisplayName: displayName,
+        PhoneNumber: phoneNumber
+      },
+      SCHEMAS.AdminFunctions
+    );
+    return getResult.rows;
+  }
+  async deleteEmployee(employeeId: string): Promise<Array<Object>> {
+    const getResult: any = await this.dataAccessService.executeDBFunction(
+      ADMIN_DB_FUNCTION_NAMES.DeleteEmployee,
+      {
+        EmployeeId: employeeId
+      },
+      SCHEMAS.AdminFunctions
+    );
+    return getResult.rows;
   }
 }

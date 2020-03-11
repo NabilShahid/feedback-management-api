@@ -43,4 +43,14 @@ export class UserOperationsService {
     );
     return putResult.rows[0];
   }
+  async getAssignedReviews(employeeId: string) {
+    const getResult: any = await this.dataAccessService.executeDBFunction(
+      USER_DB_FUNCTION_NAMES.GetAssignedReviews,
+      {
+        EmployeeId: employeeId
+      },
+      SCHEMAS.UserFunctions
+    );
+    return getResult.rows;
+  }
 }

@@ -5,7 +5,7 @@ import {
   PerformanceReview
 } from "./../types/common-types";
 import { AdminOperationsService } from "./admin-operations.service";
-import { Controller, Post, Query, Body, Get, Put } from "@nestjs/common";
+import { Controller, Post, Query, Body, Get, Put, Delete } from "@nestjs/common";
 
 @Controller("admin-operations")
 export class AdminOperationsController {
@@ -32,6 +32,10 @@ export class AdminOperationsController {
   getAllPerformanceReviews(): Promise<Array<PerformanceReview>> {
     return this.adminOperationsService.getAllPerformanceReviews();
   }
+  @Get("GetSubmittedReviews")
+  GetSubmittedReviews(@Query() query): Promise<Array<PerformanceReview>> {
+    return this.adminOperationsService.getSubmittedReviews(query.performanceReviewId);
+  }
   @Post("createPerformanceReview")
   createPerformanceReview(@Body() body): Promise<DbResultObj> {
     return this.adminOperationsService.createPerformanceReview(
@@ -42,9 +46,23 @@ export class AdminOperationsController {
   @Put("manageReviewAssignees")
   manageReviewAssignees(@Body() body): Promise<DbResultObj> {
     return this.adminOperationsService.manageReviewAssignees(
-      body.performaceReviewId,
-      body.assigneesToAdd,
-      body.assigneesToRemove
+      body.PerformanceReviewId,
+      body.AssigneesToAdd,
+      body.AssigneesToRemove
+    );
+  }
+  @Put("updateEmployee")
+  updateEmployee(@Query() query,@Body() body): Promise<Object> {
+    return this.adminOperationsService.updateEmployee(
+      query.employeeId,
+      body.DisplayName,
+      body.PhoneNumber
+    );
+  }
+  @Delete("deleteEmployee")
+  deleteEmployee(@Query() query): Promise<Object> {
+    return this.adminOperationsService.deleteEmployee(
+      query.employeeId
     );
   }
 }

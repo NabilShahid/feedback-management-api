@@ -26,4 +26,10 @@ export class UserOperationsController {
         body.RatingHonesty,
       );
     }
+    @Get("getAssignedReviews")
+    getAssignedReviews(@Query() query): Promise<Array<Object>> {
+      return this.userOperationsService.getAssignedReviews(
+        query.employeeId
+      );
+    }
 }
